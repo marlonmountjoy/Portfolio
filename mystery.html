@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>My Three.js Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Marlon Mountjoy</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+        <a href="mystery.html" class="active">Mystery</a>
+      </nav>
+    </header>
+
+    <div id="canvas-container"></div>
+
+    <!-- Include the Three.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.136.0/build/three.min.js"></script>
+
+    <script>
+      // Define the scene, camera, and renderer
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 5;
+      camera.position.x = -2;
+      camera.position.y = 2;
+      
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      // Add the renderer to the page
+      document.getElementById("canvas-container").appendChild(renderer.domElement);
+
+      // Create a cube with a texture
+      var loader = new THREE.TextureLoader();
+      var texture = loader.load('images/texturechess.jpg');
+      var geometry = new THREE.BoxGeometry(2, 2, 2);
+      var material = new THREE.MeshPhongMaterial({ map: texture });
+      var cube = new THREE.Mesh(geometry, material);
+      cube.rotation.y = Math.PI / 6; // Rotate the cube by 30 degrees
+      cube.position.x = 2; // Move the cube to the right
+
+      // Add the cube to the scene
+      scene.add(cube);
+
+      // Create ambient light
+      var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      // Create directional light and add it to the scene
+      var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(1, 1, 1).normalize();
+      scene.add(directionalLight);
+
+      // Add a shadow to the cube
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      cube.castShadow = true;
+      directionalLight.castShadow = true;
+      directionalLight.shadow.mapSize.width = 512;
+      directionalLight.shadow.mapSize.height = 512;
+      directionalLight.shadow.camera.near = 0.5;
+      directionalLight.shadow.camera.far = 500;
+
+      // Set the background color of the scene to gray
+      scene.background = new THREE.Color(0x333333);
+
+      // Animate the cube
+      function animate() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Handle window resize events
+      window.addEventListener('resize', function() {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      });
+    </script>
+  </body>
+</html>
