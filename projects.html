@@ -63,9 +63,12 @@
       scene.add(light);
 
       // Position the camera so that the sphere is in view
-      camera.position.z = 10;
+      camera.position.z = 9;
       camera.position.x = 0;
-      camera.position.y = 0;
+      camera.position.y = 2;
+      camera.rotation.x = .01;
+      camera.rotation.y = 0;
+      camera.rotation.z = 0;
 
       var velocity = new THREE.Vector3(0, 0.3, 0);
       var acceleration = new THREE.Vector3(0, -0.01, 0);
@@ -101,7 +104,33 @@
       
       animate();
       
+            // Create a backboard
+      var backboardTexture = new THREE.TextureLoader().load( 'images/texturebackboard.jpg' );
+      var backboardMaterial = new THREE.MeshBasicMaterial( { map: backboardTexture } );
+      var backboardGeometry = new THREE.PlaneGeometry( 3, 3, 32 );
+      var backboard = new THREE.Mesh( backboardGeometry, backboardMaterial );
+      backboard.position.set(0, 8.8, 0);
+      scene.add( backboard );
 
+      // Create a rim
+      var rimTexture = new THREE.TextureLoader().load( 'images/texturerim.jpg' );
+      var rimMaterial = new THREE.MeshBasicMaterial( { map: rimTexture } );
+      var rimGeometry = new THREE.TorusGeometry( 0.5, 0.04, 16, 100 );
+      var rim = new THREE.Mesh( rimGeometry, rimMaterial );
+      rim.rotation.x = 2.3;
+      rim.position.set(0, 7.2, 1);
+      scene.add( rim );
+
+      // Create a net
+      var netTexture = new THREE.TextureLoader().load( 'images/texturenet.jpg' );
+      var netMaterial = new THREE.MeshBasicMaterial( { map: netTexture } );
+      var netGeometry = new THREE.CylinderGeometry( 0.5, 0.4, 0.7 , 20 );
+      var net = new THREE.Mesh( netGeometry, netMaterial );
+      net.rotation.x = .4;
+      net.rotation.z = 1;
+      net.rotation.z = 0;
+      net.position.set(0, 6.7, 1);
+      scene.add( net );
 
       // Handle window resize events
       window.addEventListener('resize', function() {
