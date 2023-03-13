@@ -10,8 +10,8 @@
     <header>
       <h1>Marlon Mountjoy</h1>
       <nav>
-        <a href="index.html" class="active">Home</a>
-        <a href="projects.html">Projects</a>
+        <a href="index.html">Home</a>
+        <a href="projects.html" class="active">Projects</a>
         <a href="contact.html">Contact</a>
         <a href="mystery.html">Mystery</a>
       </nav>
@@ -36,13 +36,26 @@
 
       // Create a sphere with a texture
       var loader = new THREE.TextureLoader();
-      var texture = loader.load('images/texturefutball.jpg');
+      var texture = loader.load('images/texturebball.jpg');
       var geometry = new THREE.SphereGeometry(1, 32, 32);
       var material = new THREE.MeshPhongMaterial({ map: texture });
       var sphere = new THREE.Mesh(geometry, material);
+      sphere.rotation.y = -1;
 
       // Add the sphere to the scene
       scene.add(sphere);
+
+            // Create a plane with a texture
+      var floorTexture = loader.load('images/texturefloor.jpg');
+      var floorGeometry = new THREE.PlaneGeometry(20, 20, 10, 10);
+      var floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
+      var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+      floor.rotation.x = -Math.PI / 3; // rotate to be a horizontal plane
+      floor.position.y = -2; // move it down to be beneath the basketball
+
+      // Add the floor to the scene
+      scene.add(floor);
+
 
       // Create a directional light and add it to the scene
       var light = new THREE.DirectionalLight(0xffffff, 1);
@@ -50,26 +63,44 @@
       scene.add(light);
 
       // Position the camera so that the sphere is in view
-      camera.position.z = 5;
+      camera.position.z = 10;
+      camera.position.x = 0;
+      camera.position.y = 0;
 
-      // Add a bouncing animation to the sphere
-var velocity = new THREE.Vector3(0, 1, 0);
-var acceleration = new THREE.Vector3(0, -0.01, 0);
-var spherePosition = new THREE.Vector3(0, 0, 0);
-function animate() {
-  requestAnimationFrame(animate);
-  // Update sphere position based on velocity and acceleration
-  velocity.add(acceleration);
-  spherePosition.add(velocity);
-  // Reverse direction if sphere hits the ground
-  if (spherePosition.y < -1) {
-    velocity.y *= -0.9; // bounce with some damping
-    spherePosition.y = -1;
-  }
-  sphere.position.copy(spherePosition);
-  renderer.render(scene, camera);
-}
-animate();
+      var velocity = new THREE.Vector3(0, 0.3, 0);
+      var acceleration = new THREE.Vector3(0, -0.01, 0);
+      var spherePosition = new THREE.Vector3(0, 0, 0);
+      var isBouncing = true;
+      
+      function animate() {
+        requestAnimationFrame(animate);
+        
+        if (isBouncing) {
+          // Update sphere position based on velocity and acceleration
+          velocity.add(acceleration);
+          spherePosition.add(velocity);
+          // Reverse direction if sphere hits the ground
+          if (spherePosition.y < -1) {
+            velocity.y *= -0.9; // bounce with some damping
+            spherePosition.y = -1;
+          }
+        } else {
+          // Start rolling animation
+          spherePosition.z -= 0.1;
+          sphere.rotation.y += 0.1;
+        }
+        
+        sphere.position.copy(spherePosition);
+        renderer.render(scene, camera);
+        
+        // Stop bouncing when the ball is low enough
+        if (spherePosition.y < -3) {
+          isBouncing = false;
+        }
+      }
+      
+      animate();
+      
 
 
       // Handle window resize events
