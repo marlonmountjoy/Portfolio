@@ -37,14 +37,19 @@
       document.getElementById("canvas-container").appendChild(renderer.domElement);
 
       // Create a cube with a texture
-      var loader = new THREE.TextureLoader();
-      var texture = loader.load('images/texturechess.jpg');
-      var geometry = new THREE.BoxGeometry(3, 3, 3);
-      var material = new THREE.MeshPhongMaterial({ map: texture });
-      var cube = new THREE.Mesh(geometry, material);
-      cube.rotation.y = Math.PI / 6; // Rotate the cube by 30 degrees
-      cube.position.x = 2; // Move the cube to the right
-      cube.position.y = 0;
+     
+      // Create the cube
+      const geometry = new THREE.BoxGeometry(4, 4, 4);
+      const materials = [
+        new THREE.MeshStandardMaterial({ map: new THREE.TextureLoader().load('images/indexHTMLpic.jpg') }), // Front
+        new THREE.MeshStandardMaterial({ map: new THREE.TextureLoader().load('images/indexHTMLpic.jpg') }), // Back
+        new THREE.MeshStandardMaterial({ map: new THREE.TextureLoader().load('images/indexHTMLpic.jpg') }), // Top
+        new THREE.MeshStandardMaterial({ map: new THREE.TextureLoader().load('images/indexHTMLpic.jpg') }), // Bottom
+        new THREE.MeshStandardMaterial({ map: new THREE.TextureLoader().load('images/indexHTMLpic.jpg') }), // Right
+        new THREE.MeshStandardMaterial({ map: new THREE.TextureLoader().load('images/indexHTMLpic.jpg') }) // Left
+      ];
+      const cube = new THREE.Mesh(geometry, materials);
+      scene.add(cube);
 
       // Add the cube to the scene
       scene.add(cube);
@@ -74,11 +79,73 @@
       // Animate the cube
       function animate() {
         requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+        cube.rotation.x += 0;
+        cube.rotation.y += 0;
         renderer.render(scene, camera);
       }
       animate();
+
+      var zoomSpeed = 0.2; // The speed of the zoom
+      var minZoom = 3; // The minimum distance the camera can be from the cube
+      var maxZoom = 15; // The maximum distance the camera can be from the cube
+
+      // Add event listeners for mouse wheel scroll
+      document.addEventListener('wheel', function(event) {
+        event.preventDefault(); // Prevent the page from scrolling
+        var delta = event.deltaY * zoomSpeed;
+        camera.position.z += delta; // Zoom in or out based on mouse wheel scroll
+        if (camera.position.z < minZoom) {
+          camera.position.z = minZoom; // Limit the minimum distance the camera can be from the cube
+        } else if (camera.position.z > maxZoom) {
+          camera.position.z = maxZoom; // Limit the maximum distance the camera can be from the cube
+        }
+      });
+
+      var mouse = new THREE.Vector2();
+      var raycaster = new THREE.Raycaster();
+      var intersectedObject, selectedObject;
+      var isMouseDown = false;
+      
+      // Add event listeners for mouse down, move, and up events
+      document.addEventListener('mousedown', onMouseDown, false);
+      document.addEventListener('mousemove', onMouseMove, false);
+      document.addEventListener('mouseup', onMouseUp, false);
+      
+      function onMouseDown(event) {
+        isMouseDown = true;
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        var intersects = raycaster.intersectObjects(scene.children);
+        if (intersects.length > 0) {
+          intersectedObject = intersects[0].object;
+        }
+      }
+      
+      function onMouseMove(event) {
+        if (isMouseDown) {
+          mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+          mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+          raycaster.setFromCamera(mouse, camera);
+          var intersects = raycaster.intersectObjects(scene.children);
+          if (intersects.length > 0) {
+            selectedObject = intersects[0].object;
+            if (selectedObject === intersectedObject) {
+              // Rotate the cube around the x, y, and z axes
+              selectedObject.rotation.x += event.movementY * 0.01;
+              selectedObject.rotation.y += event.movementX * 0.01;
+              selectedObject.rotation.z += event.movementX * 0.01;
+            }
+          }
+        }
+      }
+      
+      function onMouseUp(event) {
+        isMouseDown = false;
+        intersectedObject = null;
+        selectedObject = null;
+      }
+
 
       // Handle window resize events
       window.addEventListener('resize', function() {

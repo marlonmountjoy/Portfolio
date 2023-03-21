@@ -28,6 +28,11 @@
   text-align: center;
 }
 
+code {
+color: #8769e4;
+font-size: large;
+}
+
 img {
   width: 10rem;
   height: 10rem;
