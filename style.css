@@ -1,48 +1,32 @@
-#myname {
-  background-color: black;
-  color: #8769e4;
-  border-style: none;
-  border-radius: 5%;
-  border-color: #333;
-  font-size: xx-large;
-  font-family: fantasy;
-  font-weight: bolder;
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
-#close {
-  background-color: black;
-  color: #8769e4;
-  border: none;
+body {
+  background-color: #333;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
 }
 
-#alert {
-  display: none;
-  background-image: "images/texturespace.jpg";
-  border: none;
-  border-radius: 5%;
+#canvas-container {
   position: absolute;
-  width: 160px;
-  left: 5%;
-  top: 10%;
-  padding: 6px 8px 8px;
-  text-align: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-code {
-color: #8769e4;
-font-size: large;
-}
-
-img {
-  width: 10rem;
-  height: 10rem;
-  border-radius: 100%;
-}
-
-audio {
-  position: absolute;
-  right: 15%;
-  bottom: 10%;
+.audio {
+  position: fixed;
+  bottom: 20px;
+  left: 80%;
+  transform: translateX(-50%);
+  z-index: 500;
 }
 
 /* Change the color of the audio player controls */
@@ -68,45 +52,20 @@ audio::-webkit-media-controls-seek-forward-button {
 }
 
 
-/* Style the mystery container */
-#mystery-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: #6B8E23;
+header {
+  position: relative;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
 }
 
-/* Style the cube */
-#cube {
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  background-color: #222;
-}
-
-/* Style the canvas element to fit the screen */
-canvas {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* Center the canvas horizontally */
-#canvas-container {
-  display: flex;
-  justify-content: center;
-}
-
-/* Style the header and navbar */
 header {
   display: flex;
-  align-items: center;
+  align-items:center;
   justify-content: space-between;
-  padding: 1rem;
+  height: 10rem;
+  padding: 0.5rem;
   background-color: black;
   color: #8769e4;
   font-family: fantasy;
@@ -132,21 +91,6 @@ nav a:hover {
 
 nav a.active {
   text-decoration: underline;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
-/* Add some basic styles */
-body {
-  background-color: #333;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  margin: 0;
-  padding: 0;
 }
 
 h1 {
@@ -223,5 +167,15 @@ input[type="submit"]:hover {
   input[type="email"],
   textarea {
     width: 48%;
+  }
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 20px;
+  }
+
+  nav a {
+    font-size: 12px;
   }
 }
