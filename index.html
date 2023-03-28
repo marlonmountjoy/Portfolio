@@ -12,11 +12,10 @@ Music promoted by Audio Library https://youtu.be/rlBuOflkHSk-->
   </head>
   <body>
     <header>
-      <div id = "alert">
-        <img src="images/popup.jpg" alt="profile pic"> </img>
+      <div id="alert">
         <button id="close" onclick="closeDialog()"> Close </button>
-       </div>
-       <button id="myname" onclick='invokeAlert();'> Marlon Mountjoy </button>
+      </div>
+      <button id="myname" onclick='invokeAlert();'> Marlon Mountjoy </button>
        <script>
           var alertDiv = document.getElementById("alert");
           function invokeAlert() {
@@ -33,9 +32,9 @@ Music promoted by Audio Library https://youtu.be/rlBuOflkHSk-->
         <a href="mystery.html" target="blank">Mystery</a>
       </nav>
     </header>
-
+    <div class="audio">
     <audio controls autoplay loop src="audio/Over You - Atch · [Free Copyright-safe Music].mp3"></audio>
-
+    </div>
     <div id="canvas-container"></div>
 
     <!-- Include the Three.js library -->
@@ -86,6 +85,12 @@ Music promoted by Audio Library https://youtu.be/rlBuOflkHSk-->
       }
       animate();
 
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          closeDialog();
+        }
+      });
+
       // Handle window resize events
       window.addEventListener('resize', function() {
         var width = window.innerWidth;
@@ -95,5 +100,31 @@ Music promoted by Audio Library https://youtu.be/rlBuOflkHSk-->
         camera.updateProjectionMatrix();
       });
     </script>
+
+    <script>
+      var alertDiv = document.getElementById("alert");
+      var isDragging = false;
+      var offsetX, offsetY;
+    
+      alertDiv.addEventListener("mousedown", function (e) {
+        isDragging = true;
+        offsetX = e.clientX - alertDiv.offsetLeft;
+        offsetY = e.clientY - alertDiv.offsetTop;
+      });
+    
+      document.addEventListener("mousemove", function (e) {
+        if (isDragging) {
+          var newX = e.clientX - offsetX;
+          var newY = e.clientY - offsetY;
+          alertDiv.style.left = newX + "px";
+          alertDiv.style.top = newY + "px";
+        }
+      });
+    
+      document.addEventListener("mouseup", function (e) {
+        isDragging = false;
+      });
+    </script>
+    
   </body>
 </html>

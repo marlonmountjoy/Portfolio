@@ -1,8 +1,36 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+#myname {
+  background-color: black;
+  color: #8769e4;
+  border-style: none;
+  border-radius: 5%;
+  border-color: #333;
+  font-size: xx-large;
+  font-family: fantasy;
+  font-weight: bolder;
 }
+
+#close {
+  background-color: black;
+  color: #8769e4;
+  border: none;
+}
+
+#alert {
+  display: none;
+  background-image: url("images/popup.jpg");
+  background-size: cover;
+  border: none;
+  border-radius: 50%;
+  position: absolute;
+  height: 160px;
+  width: 160px;
+  left: 33%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 6px 8px 8px;
+  text-align: center;
+}
+
 
 body {
   background-color: #333;
@@ -26,7 +54,7 @@ body {
   bottom: 20px;
   left: 80%;
   transform: translateX(-50%);
-  z-index: 500;
+  z-index: 1000;
 }
 
 /* Change the color of the audio player controls */
