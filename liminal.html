@@ -9,15 +9,16 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-
+    <audio id="sound1" src="audio/Nes1.wav"></audio>
+    <audio id="sound2" src="audio/Nes2.wav"></audio>
     <header>
         <h1>Marlon Mountjoy</h1>
         <nav>
-          <a href="index.html">Home</a>
-          <a href="projects.html" class="active">Projects</a>
-          <a href="mystery.html">Mystery</a>
-          <a href="liminal.html" target="blank">Liminal</a>
-          <a href="contact.html">Contact</a>
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="mystery.html">Mystery</a>
+            <a href="liminal.html">Liminal</a>
+            <a href="contact.html">Contact</a>
         </nav>
       </header>
 
@@ -25,6 +26,7 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script> 
 
     <script>
+    
 
     // 1. Create the scene
     let scene = new THREE.Scene();
@@ -132,6 +134,40 @@
         movementSpeed = initialSpeed;
     }
     });
+
+    let currentSound = 1; // Initialize with the first sound
+
+    document.addEventListener('keydown', function(event) {
+        switch (event.keyCode) {
+            case 87: // W
+            case 65: // A
+            case 83: // S
+            case 68: // D
+                playMovementSound();
+                break;
+        }
+    });
+
+    // Add the corresponding keyup event listeners as well.
+    document.addEventListener('keyup', function(event) {
+        // Handle keyup events as before
+    });
+
+    // Function to play the movement sound
+    function playMovementSound() {
+    let soundElement = document.getElementById(`sound${currentSound}`);
+    soundElement.currentTime = 0; // Rewind to the beginning (optional)
+
+    // Set the volume here
+    soundElement.volume = 0.2; // Adjust the volume as needed
+
+    soundElement.play();
+    
+    // Toggle between sound1 and sound2
+    currentSound = (currentSound === 1) ? 2 : 1;
+    }
+
+
 
        // 6. Set up OrbitControls with cube as the target
     let controls = new THREE.OrbitControls(camera, renderer.domElement);

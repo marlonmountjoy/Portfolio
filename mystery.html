@@ -11,13 +11,13 @@
       <h1>Marlon Mountjoy</h1>
       <nav>
           <a href="index.html">Home</a>
-          <a href="projects.html" class="active">Projects</a>
+          <a href="projects.html">Projects</a>
           <a href="mystery.html">Mystery</a>
-          <a href="liminal.html" target="blank">Liminal</a>
+          <a href="liminal.html">Liminal</a>
           <a href="contact.html">Contact</a>
       </nav>
     </header>
-
+    
     <div id="canvas-container"></div>
 
     <!-- Include the Three.js library -->
@@ -26,10 +26,10 @@
     <script>
       // Define the scene, camera, and renderer
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 12;
-      camera.position.x = 0;
-      camera.position.y = 1;
+      var camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 10;
+      camera.position.x = 3;
+      camera.position.y = 3;
       
       var renderer = new THREE.WebGLRenderer();
       renderer.setSize(window.innerWidth, window.innerHeight);
