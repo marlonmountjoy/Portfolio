@@ -32,13 +32,13 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional for softer shadows
     document.body.appendChild(renderer.domElement);
 
-    // Grid Helper
+    /* // Grid Helper
     let gridHelper = new THREE.GridHelper(500, 50);
-    scene.add(gridHelper);
+    scene.add(gridHelper); */
 
-    // Axes Helper
+    /* // Axes Helper
     let axesHelper = new THREE.AxesHelper(5);
-    scene.add(axesHelper);
+    scene.add(axesHelper); */
 
     // 4. Add the infinite-looking floor
     let floorGeometry = new THREE.CircleGeometry(500, 64);
@@ -49,7 +49,7 @@
     scene.add(floor);
 
     // Adding the cube
-    let cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    let cubeGeometry = new THREE.BoxGeometry(2, 8, 2);
     let cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x333333 });
     let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
     cube.position.y = 0.5;
@@ -57,8 +57,8 @@
     scene.add(cube);
 
     // Random Spheres
-    let sphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-    let sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+    let sphereGeometry = new THREE.SphereGeometry(5, 132, 132);
+    let sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xFD3754 });
 
     for (let i = 0; i < 100; i++) {
         let sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
@@ -96,7 +96,7 @@
     // Define initial speed, max speed, and acceleration
     let movementSpeed = 0.1;
     const initialSpeed = 0.1;
-    const maxSpeed = .7; // You can adjust this to a desired max speed.
+    const maxSpeed = .5; // You can adjust this to a desired max speed.
     const acceleration = 0.01;
 
     document.addEventListener('keydown', function(event) {
@@ -165,10 +165,7 @@
         movementSpeed = initialSpeed;
     }
 }
-
-
-
-    // 8. Render the scene
+     // 8. Render the scene
     function animate() {
         updateCubeAndCameraPosition();
         requestAnimationFrame(animate);
