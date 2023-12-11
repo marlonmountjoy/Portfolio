@@ -5,8 +5,9 @@
     <title>My Three.js Portfolio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
   </head>
-  <body style="background-image: url(images/texturespace.jpg);">
+  <body>
     <header>
       <h1>Marlon Mountjoy</h1>
       <nav>
@@ -34,9 +35,15 @@
       // Add the renderer to the page
       document.getElementById("canvas-container").appendChild(renderer.domElement);
 
+      // Create a texture object for the background
+      var texture = new THREE.TextureLoader().load('images/texturespace.jpg');
+      
+      // Set the background of the scene to the texture
+      scene.background = texture;
+
       // Create a sphere with a texture
       var loader = new THREE.TextureLoader();
-      var texture = loader.load('images/texturefutball.jpg');
+      var texture = loader.load('images/textureglobe.jpg');
       var geometry = new THREE.SphereGeometry(1, 32, 32);
       var material = new THREE.MeshPhongMaterial({ map: texture });
       var sphere = new THREE.Mesh(geometry, material);
@@ -52,25 +59,14 @@
       // Position the camera so that the sphere is in view
       camera.position.z = 5;
 
-      // Add a bouncing animation to the sphere
-var velocity = new THREE.Vector3(0, 1, 0);
-var acceleration = new THREE.Vector3(0, -0.01, 0);
-var spherePosition = new THREE.Vector3(0, 0, 0);
-function animate() {
-  requestAnimationFrame(animate);
-  // Update sphere position based on velocity and acceleration
-  velocity.add(acceleration);
-  spherePosition.add(velocity);
-  // Reverse direction if sphere hits the ground
-  if (spherePosition.y < -1) {
-    velocity.y *= -0.9; // bounce with some damping
-    spherePosition.y = -1;
-  }
-  sphere.position.copy(spherePosition);
-  renderer.render(scene, camera);
-}
-animate();
-
+      // Add a spinning animation to the sphere
+      function animate() {
+        requestAnimationFrame(animate);
+        //sphere.rotation.x += 0.01;
+        sphere.rotation.y += 0.001;
+        renderer.render(scene, camera);
+      }
+      animate();
 
       // Handle window resize events
       window.addEventListener('resize', function() {
@@ -81,5 +77,9 @@ animate();
         camera.updateProjectionMatrix();
       });
     </script>
+    <!-- jQuery -->
+    <script src="js/js/jquery.min.js"></script>
+    <!-- Bootstrap Bundle JS -->
+    <script src="js/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
