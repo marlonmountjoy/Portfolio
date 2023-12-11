@@ -7,15 +7,19 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body style="background-image: url(images/texturespace.jpg);">
-    <header>
+    <header id="projects-nav">
       <h1>Marlon Mountjoy</h1>
       <nav>
-        <a href="index.html" class="active">Home</a>
+        <a href="index.html">Home</a>
         <a href="projects.html">Projects</a>
-        <a href="contact.html">Contact</a>
         <a href="mystery.html">Mystery</a>
+        <a href="liminal.html">Liminal</a>
+        <a href="contact.html">Contact</a>
       </nav>
     </header>
+
+    <audio autoplay src="audio/BallBounce.mp3"></audio>
+   
 
     <div id="canvas-container"></div>
 
@@ -36,13 +40,26 @@
 
       // Create a sphere with a texture
       var loader = new THREE.TextureLoader();
-      var texture = loader.load('images/texturefutball.jpg');
+      var texture = loader.load('images/texturebball.jpg');
       var geometry = new THREE.SphereGeometry(1, 32, 32);
       var material = new THREE.MeshPhongMaterial({ map: texture });
       var sphere = new THREE.Mesh(geometry, material);
+      sphere.rotation.y = -1;
 
       // Add the sphere to the scene
       scene.add(sphere);
+
+            // Create a plane with a texture
+      var floorTexture = loader.load('images/texturefloor.jpg');
+      var floorGeometry = new THREE.PlaneGeometry(20, 20, 10, 10);
+      var floorMaterial = new THREE.MeshPhongMaterial({ map: floorTexture });
+      var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+      floor.rotation.x = -Math.PI / 3; // rotate to be a horizontal plane
+      floor.position.y = -2; // move it down to be beneath the basketball
+
+      // Add the floor to the scene
+      scene.add(floor);
+
 
       // Create a directional light and add it to the scene
       var light = new THREE.DirectionalLight(0xffffff, 1);
@@ -50,27 +67,74 @@
       scene.add(light);
 
       // Position the camera so that the sphere is in view
-      camera.position.z = 5;
+      camera.position.z = 9;
+      camera.position.x = 0;
+      camera.position.y = 2;
+      camera.rotation.x = .01;
+      camera.rotation.y = 0;
+      camera.rotation.z = 0;
 
-      // Add a bouncing animation to the sphere
-var velocity = new THREE.Vector3(0, 1, 0);
-var acceleration = new THREE.Vector3(0, -0.01, 0);
-var spherePosition = new THREE.Vector3(0, 0, 0);
-function animate() {
-  requestAnimationFrame(animate);
-  // Update sphere position based on velocity and acceleration
-  velocity.add(acceleration);
-  spherePosition.add(velocity);
-  // Reverse direction if sphere hits the ground
-  if (spherePosition.y < -1) {
-    velocity.y *= -0.9; // bounce with some damping
-    spherePosition.y = -1;
-  }
-  sphere.position.copy(spherePosition);
-  renderer.render(scene, camera);
-}
-animate();
+      var velocity = new THREE.Vector3(0, 0.3, 0);
+      var acceleration = new THREE.Vector3(0, -0.01, 0);
+      var spherePosition = new THREE.Vector3(0, 0, 0);
+      var isBouncing = true;
+      
+      function animate() {
+        requestAnimationFrame(animate);
+        
+        if (isBouncing) {
+          // Update sphere position based on velocity and acceleration
+          velocity.add(acceleration);
+          spherePosition.add(velocity);
+          // Reverse direction if sphere hits the ground
+          if (spherePosition.y < -1) {
+            velocity.y *= -0.9; // bounce with some damping
+            spherePosition.y = -1;
+          }
+        } else {
+          // Start rolling animation
+          spherePosition.z -= 0.1;
+          sphere.rotation.y += 0.1;
+        }
+        
+        sphere.position.copy(spherePosition);
+        renderer.render(scene, camera);
+        
+        // Stop bouncing when the ball is low enough
+        if (spherePosition.y < -3) {
+          isBouncing = false;
+        }
+      }
+      
+      animate();
+      
+            // Create a backboard
+      var backboardTexture = new THREE.TextureLoader().load( 'images/texturebackboard.jpg' );
+      var backboardMaterial = new THREE.MeshBasicMaterial( { map: backboardTexture } );
+      var backboardGeometry = new THREE.PlaneGeometry( 3, 3, 32 );
+      var backboard = new THREE.Mesh( backboardGeometry, backboardMaterial );
+      backboard.position.set(0, 8.8, 0);
+      scene.add( backboard );
 
+      // Create a rim
+      var rimTexture = new THREE.TextureLoader().load( 'images/texturerim.jpg' );
+      var rimMaterial = new THREE.MeshBasicMaterial( { map: rimTexture } );
+      var rimGeometry = new THREE.TorusGeometry( 0.5, 0.04, 16, 100 );
+      var rim = new THREE.Mesh( rimGeometry, rimMaterial );
+      rim.rotation.x = 2.3;
+      rim.position.set(0, 7.2, 1);
+      scene.add( rim );
+
+      // Create a net
+      var netTexture = new THREE.TextureLoader().load( 'images/texturenet.jpg' );
+      var netMaterial = new THREE.MeshBasicMaterial( { map: netTexture } );
+      var netGeometry = new THREE.CylinderGeometry( 0.5, 0.4, 0.7 , 20 );
+      var net = new THREE.Mesh( netGeometry, netMaterial );
+      net.rotation.x = .4;
+      net.rotation.z = 1;
+      net.rotation.z = 0;
+      net.position.set(0, 6.7, 1);
+      scene.add( net );
 
       // Handle window resize events
       window.addEventListener('resize', function() {

@@ -5,22 +5,37 @@
     <title>My Three.js Portfolio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <!-- Over You - Atch https://soundcloud.com/atch-music
+Creative Commons — Attribution 3.0 Unported — CC BY 3.0
+Free Download / Stream: http://bit.ly/_over-you
+Music promoted by Audio Library https://youtu.be/rlBuOflkHSk-->
   </head>
   <body>
     <header>
-       <!-- Add an anchor tag around the h1 text -->
-       <a href="#" onmouseover="document.getElementById('popup.jpg').style.display='block'" 
-       onmouseout="document.getElementById('popup.jpg').style.display='none'">
-      <h1>Marlon Mountjoy</h1>
-      </a>
+      <div id="alert">
+        <button id="close" onclick="closeDialog()"> Close </button>
+      </div>
+      <button id="myname" onclick='invokeAlert();'> Marlon Mountjoy </button>
+       <script>
+          var alertDiv = document.getElementById("alert");
+          function invokeAlert() {
+             alertDiv.style.display = "block";
+          }
+          function closeDialog() {
+             alertDiv.style.display = "none";
+          }
+       </script>
       <nav>
-        <a href="index.html" class="active">Home</a>
+        <a href="index.html">Home</a>
         <a href="projects.html">Projects</a>
-        <a href="contact.html">Contact</a>
         <a href="mystery.html">Mystery</a>
+        <a href="liminal.html">Liminal</a>
+        <a href="contact.html">Contact</a>
       </nav>
     </header>
-
+    <div class="audio">
+    <audio controls autoplay loop src="audio/Over You - Atch · [Free Copyright-safe Music].mp3"></audio>
+    </div>
     <div id="canvas-container"></div>
 
     <!-- Include the Three.js library -->
@@ -71,6 +86,12 @@
       }
       animate();
 
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          closeDialog();
+        }
+      });
+
       // Handle window resize events
       window.addEventListener('resize', function() {
         var width = window.innerWidth;
@@ -80,5 +101,31 @@
         camera.updateProjectionMatrix();
       });
     </script>
+
+    <script>
+      var alertDiv = document.getElementById("alert");
+      var isDragging = false;
+      var offsetX, offsetY;
+    
+      alertDiv.addEventListener("mousedown", function (e) {
+        isDragging = true;
+        offsetX = e.clientX - alertDiv.offsetLeft;
+        offsetY = e.clientY - alertDiv.offsetTop;
+      });
+    
+      document.addEventListener("mousemove", function (e) {
+        if (isDragging) {
+          var newX = e.clientX - offsetX;
+          var newY = e.clientY - offsetY;
+          alertDiv.style.left = newX + "px";
+          alertDiv.style.top = newY + "px";
+        }
+      });
+    
+      document.addEventListener("mouseup", function (e) {
+        isDragging = false;
+      });
+    </script>
+    
   </body>
 </html>
