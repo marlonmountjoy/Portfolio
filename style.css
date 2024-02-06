@@ -1,3 +1,58 @@
+.carousel-inner img {
+  border-radius: 100px;
+  border-color: #333;
+  border-width: 50px;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-item img {
+  border-radius: 100px;
+  border-color: #333;
+  border-width: 50px;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+/* Set carousel height to match viewport */
+.carousel {
+  border-radius: 100px;
+  border-color: #333;
+  border-width: 50px;
+  max-width: 100%;
+  max-height: calc(70vh - 200px); /* Adjust the value as needed */
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  /* Adjust carousel height for smaller screens */
+  .carousel {
+    max-height: 40vh;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  /* Adjust carousel height for larger screens */
+  .carousel {
+    max-height: 30vh;
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Adjust carousel height for even larger screens */
+  .carousel {
+    max-height: 20vh;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Adjust section margin for larger screens */
+  .section {
+    margin: 100px;
+  }
+}
 
 #projects-nav {
   position:relative;
@@ -100,7 +155,7 @@ header {
   align-items:center;
   justify-content: space-between;
   height: 10rem;
-  padding: 0.5rem;
+  padding: 0.2rem;
   background-color: black;
   color: #8769e4;
   font-family: fantasy;
