@@ -148,9 +148,6 @@ header {
   left: 50%;
   transform: translateX(-50%);
   z-index: 500;
-}
-
-header {
   display: flex;
   align-items:center;
   justify-content: space-between;
